@@ -2,7 +2,7 @@
     <img src=".github/terraform_logo.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
 </a>
 
-# Terraform AWS Cloud Control Provider
+# Terraform AWS Cloud Control Provider 
 
 - Announcement: [HashiCorp Blog](https://www.hashicorp.com/blog/announcing-terraform-aws-cloud-control-provider-tech-preview)
 - Terraform Website: [terraform.io](https://terraform.io)
