@@ -418,7 +418,7 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 	// Copy over any write-only values.
 	// They can only be in the current state.
 	for _, path := range r.writeOnlyAttributePaths {
-		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &request.State, *path)...)
+		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &desiredState, *path)...)
 		if response.Diagnostics.HasError() {
 			return
 		}
