@@ -415,10 +415,15 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 	// Produce a wholly-known new State by determining the final values for any attributes left unknown in the planned state.
 	response.State.Raw = request.Plan.Raw
 
+	tmp := tfsdk.State{
+		Schema: request.Plan.Schema,
+		Raw:    request.Plan.Raw,
+	}
+
 	// Copy over any write-only values.
 	// They can only be in the current state.
 	for _, path := range r.writeOnlyAttributePaths {
-		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &desiredState, *path)...)
+		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &tmp, *path)...)
 		if response.Diagnostics.HasError() {
 			return
 		}
