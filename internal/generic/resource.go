@@ -420,15 +420,6 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 		Raw:    request.Plan.Raw,
 	}
 
-	// Copy over any write-only values.
-	// They can only be in the current state.
-	for _, path := range r.writeOnlyAttributePaths {
-		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &tmp, *path)...)
-		if response.Diagnostics.HasError() {
-			return
-		}
-	}
-
 	// Set the "id" attribute.
 	if err = r.setId(ctx, id, &response.State); err != nil {
 		response.Diagnostics.Append(ResourceIdentifierNotSetDiag(err))
@@ -437,6 +428,16 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 	}
 
 	response.Diagnostics.Append(r.populateUnknownValues(ctx, id, &response.State)...)
+
+	// Copy over any write-only values.
+	// They can only be in the current state.
+	for _, path := range r.writeOnlyAttributePaths {
+		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &tmp, *path)...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+	}
+	
 	if response.Diagnostics.HasError() {
 		return
 	}
