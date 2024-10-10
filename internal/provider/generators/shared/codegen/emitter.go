@@ -154,7 +154,7 @@ func (e Emitter) emitAttribute(tfType string, attributeNameMap map[string]string
 	}
 
 	// All Optional attributes are also Computed.
-	if optional && !computed {
+	if optional && !computed && !writeOnly {
 		computed = true
 	}
 

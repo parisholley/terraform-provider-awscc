@@ -214,10 +214,6 @@ func domainResource(ctx context.Context) (resource.Resource, error) {
 						// Property: PublicKey
 						"public_key": schema.StringAttribute{ /*START ATTRIBUTE*/
 							Optional: true,
-							Computed: true,
-							PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-								stringplanmodifier.UseStateForUnknown(),
-							}, /*END PLAN MODIFIERS*/
 							// PublicKey is a write-only property.
 						}, /*END ATTRIBUTE*/
 						// Property: RolesKey
@@ -272,10 +268,6 @@ func domainResource(ctx context.Context) (resource.Resource, error) {
 						}, /*END ATTRIBUTE*/
 					}, /*END SCHEMA*/
 					Optional: true,
-					Computed: true,
-					PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-						objectplanmodifier.UseStateForUnknown(),
-					}, /*END PLAN MODIFIERS*/
 					// MasterUserOptions is a write-only property.
 				}, /*END ATTRIBUTE*/
 				// Property: SAMLOptions
@@ -325,19 +317,11 @@ func domainResource(ctx context.Context) (resource.Resource, error) {
 						// Property: MasterBackendRole
 						"master_backend_role": schema.StringAttribute{ /*START ATTRIBUTE*/
 							Optional: true,
-							Computed: true,
-							PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-								stringplanmodifier.UseStateForUnknown(),
-							}, /*END PLAN MODIFIERS*/
 							// MasterBackendRole is a write-only property.
 						}, /*END ATTRIBUTE*/
 						// Property: MasterUserName
 						"master_user_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 							Optional: true,
-							Computed: true,
-							PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-								stringplanmodifier.UseStateForUnknown(),
-							}, /*END PLAN MODIFIERS*/
 							// MasterUserName is a write-only property.
 						}, /*END ATTRIBUTE*/
 						// Property: RolesKey

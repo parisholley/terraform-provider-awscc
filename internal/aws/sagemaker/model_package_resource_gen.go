@@ -854,16 +854,11 @@ func modelPackageResource(ctx context.Context) (resource.Resource, error) {
 								// Property: Image
 								"image": schema.StringAttribute{ /*START ATTRIBUTE*/
 									Description: "The Amazon EC2 Container Registry (Amazon ECR) path where inference code is stored.",
-									Optional:    true,
-									Computed:    true,
+									Required:    true,
 									Validators: []validator.String{ /*START VALIDATORS*/
 										stringvalidator.LengthBetween(1, 255),
 										stringvalidator.RegexMatches(regexp.MustCompile("[\\S]{1,255}"), ""),
-										fwvalidators.NotNullString(),
 									}, /*END VALIDATORS*/
-									PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-										stringplanmodifier.UseStateForUnknown(),
-									}, /*END PLAN MODIFIERS*/
 								}, /*END ATTRIBUTE*/
 								// Property: ImageDigest
 								"image_digest": schema.StringAttribute{ /*START ATTRIBUTE*/
@@ -1018,15 +1013,10 @@ func modelPackageResource(ctx context.Context) (resource.Resource, error) {
 							}, /*END SCHEMA*/
 						}, /*END NESTED OBJECT*/
 						Description: "The Amazon ECR registry path of the Docker image that contains the inference code.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.List{ /*START VALIDATORS*/
 							listvalidator.SizeBetween(1, 15),
-							fwvalidators.NotNullList(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-							listplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: Description
 					"description": schema.StringAttribute{ /*START ATTRIBUTE*/
@@ -1044,16 +1034,11 @@ func modelPackageResource(ctx context.Context) (resource.Resource, error) {
 					// Property: Name
 					"name": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "A unique name to identify the additional inference specification. The name must be unique within the list of your additional inference specifications for a particular model package.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.LengthBetween(1, 63),
 							stringvalidator.RegexMatches(regexp.MustCompile("^[a-zA-Z0-9](-*[a-zA-Z0-9]){0,62}$"), ""),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: SupportedContentTypes
 					"supported_content_types": schema.ListAttribute{ /*START ATTRIBUTE*/
@@ -1114,13 +1099,9 @@ func modelPackageResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END NESTED OBJECT*/
 			Description: "An array of additional Inference Specification objects.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeBetween(1, 15),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AdditionalInferenceSpecificationsToAdd is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: ApprovalDescription

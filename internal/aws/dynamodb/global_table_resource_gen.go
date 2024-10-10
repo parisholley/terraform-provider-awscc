@@ -1816,13 +1816,9 @@ func globalTableResource(ctx context.Context) (resource.Resource, error) {
 						// Property: SeedCapacity
 						"seed_capacity": schema.Int64Attribute{ /*START ATTRIBUTE*/
 							Optional: true,
-							Computed: true,
 							Validators: []validator.Int64{ /*START VALIDATORS*/
 								int64validator.AtLeast(1),
 							}, /*END VALIDATORS*/
-							PlanModifiers: []planmodifier.Int64{ /*START PLAN MODIFIERS*/
-								int64planmodifier.UseStateForUnknown(),
-							}, /*END PLAN MODIFIERS*/
 							// SeedCapacity is a write-only property.
 						}, /*END ATTRIBUTE*/
 						// Property: TargetTrackingScalingPolicyConfiguration

@@ -234,10 +234,6 @@ func dashboardResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "<p>Dashboard publish options.</p>",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// DashboardPublishOptions is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: LastPublishedTime
@@ -591,10 +587,6 @@ func dashboardResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "<p>A list of QuickSight parameters and the list's override values.</p>",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// Parameters is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Permissions
@@ -879,10 +871,6 @@ func dashboardResource(ctx context.Context) (resource.Resource, error) {
 		"theme_arn": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "<p>The Amazon Resource Name (ARN) of the theme that is being used for this dashboard. If\n            you add a value for this field, it overrides the value that is used in the source\n            entity. The theme ARN must exist in the same AWS account where you create the\n            dashboard.</p>",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// ThemeArn is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Version
@@ -1100,13 +1088,9 @@ func dashboardResource(ctx context.Context) (resource.Resource, error) {
 		"version_description": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "<p>A description for the first version of the dashboard being created.</p>",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(1, 512),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// VersionDescription is a write-only property.
 		}, /*END ATTRIBUTE*/
 	} /*END SCHEMA*/

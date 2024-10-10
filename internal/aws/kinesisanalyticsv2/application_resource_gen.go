@@ -798,10 +798,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 								"zip_file_content": schema.StringAttribute{ /*START ATTRIBUTE*/
 									Description: "The zip-format code for a Flink-based Kinesis Data Analytics application.",
 									Optional:    true,
-									Computed:    true,
-									PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-										stringplanmodifier.UseStateForUnknown(),
-									}, /*END PLAN MODIFIERS*/
 									// ZipFileContent is a write-only property.
 								}, /*END ATTRIBUTE*/
 							}, /*END SCHEMA*/
@@ -932,10 +928,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 					}, /*END SCHEMA*/
 					Description: "Describes execution properties for a Flink-based Kinesis Data Analytics application.",
 					Optional:    true,
-					Computed:    true,
-					PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-						objectplanmodifier.UseStateForUnknown(),
-					}, /*END PLAN MODIFIERS*/
 					// EnvironmentProperties is a write-only property.
 				}, /*END ATTRIBUTE*/
 				// Property: FlinkApplicationConfiguration
@@ -2010,10 +2002,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "Specifies run configuration (start parameters) of a Kinesis Data Analytics application. Evaluated on update for RUNNING applications an only.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// RunConfiguration is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: RuntimeEnvironment

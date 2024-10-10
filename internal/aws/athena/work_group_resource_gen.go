@@ -95,10 +95,6 @@ func workGroupResource(ctx context.Context) (resource.Resource, error) {
 		"recursive_delete_option": schema.BoolAttribute{ /*START ATTRIBUTE*/
 			Description: "The option to delete the workgroup and its contents even if the workgroup contains any named queries.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Bool{ /*START PLAN MODIFIERS*/
-				boolplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// RecursiveDeleteOption is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: State
@@ -317,10 +313,6 @@ func workGroupResource(ctx context.Context) (resource.Resource, error) {
 				"additional_configuration": schema.StringAttribute{ /*START ATTRIBUTE*/
 					Description: "Additional Configuration that are passed to Athena Spark Calculations running in this workgroup",
 					Optional:    true,
-					Computed:    true,
-					PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-						stringplanmodifier.UseStateForUnknown(),
-					}, /*END PLAN MODIFIERS*/
 					// AdditionalConfiguration is a write-only property.
 				}, /*END ATTRIBUTE*/
 				// Property: BytesScannedCutoffPerQuery
@@ -915,10 +907,6 @@ func workGroupResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "The workgroup configuration update object",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// WorkGroupConfigurationUpdates is a write-only property.
 		}, /*END ATTRIBUTE*/
 	} /*END SCHEMA*/

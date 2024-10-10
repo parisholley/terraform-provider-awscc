@@ -395,10 +395,6 @@ func dataSetResource(ctx context.Context) (resource.Resource, error) {
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Optional: true,
-			Computed: true,
-			PlanModifiers: []planmodifier.Map{ /*START PLAN MODIFIERS*/
-				mapplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// FieldFolders is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: ImportMode
@@ -473,10 +469,6 @@ func dataSetResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "<p>Wait policy to use when creating/updating dataset. Default is to wait for SPICE ingestion to finish with timeout of 36 hours.</p>",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// IngestionWaitPolicy is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: LastUpdatedTime

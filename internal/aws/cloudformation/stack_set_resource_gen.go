@@ -117,16 +117,12 @@ func stackSetResource(ctx context.Context) (resource.Resource, error) {
 		"call_as": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "Specifies the AWS account that you are acting from. By default, SELF is specified. For self-managed permissions, specify SELF; for service-managed permissions, if you are signed in to the organization's management account, specify SELF. If you are signed in to a delegated administrator account, specify DELEGATED_ADMIN.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.OneOf(
 					"SELF",
 					"DELEGATED_ADMIN",
 				),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// CallAs is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Capabilities
@@ -381,10 +377,6 @@ func stackSetResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "The user-specified preferences for how AWS CloudFormation performs a stack set operation.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// OperationPreferences is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Parameters
@@ -646,14 +638,7 @@ func stackSetResource(ctx context.Context) (resource.Resource, error) {
 							}, /*END ATTRIBUTE*/
 						}, /*END SCHEMA*/
 						Description: " The AWS OrganizationalUnitIds or Accounts for which to create stack instances in the specified Regions.",
-						Optional:    true,
-						Computed:    true,
-						Validators: []validator.Object{ /*START VALIDATORS*/
-							fwvalidators.NotNullObject(),
-						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-							objectplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
+						Required:    true,
 					}, /*END ATTRIBUTE*/
 					// Property: ParameterOverrides
 					"parameter_overrides": schema.SetNestedAttribute{ /*START ATTRIBUTE*/
@@ -696,27 +681,18 @@ func stackSetResource(ctx context.Context) (resource.Resource, error) {
 					"regions": schema.SetAttribute{ /*START ATTRIBUTE*/
 						ElementType: types.StringType,
 						Description: "The names of one or more Regions where you want to create stack instances using the specified AWS account(s).",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.Set{ /*START VALIDATORS*/
 							setvalidator.SizeAtLeast(1),
 							setvalidator.ValueStringsAre(
 								stringvalidator.RegexMatches(regexp.MustCompile("^[a-zA-Z0-9-]{1,128}$"), ""),
 							),
-							fwvalidators.NotNullSet(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.Set{ /*START PLAN MODIFIERS*/
-							setplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Description: "A group of stack instances with parameters in some specific accounts and regions.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Set{ /*START PLAN MODIFIERS*/
-				setplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// StackInstancesGroup is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: StackSetId
@@ -860,13 +836,9 @@ func stackSetResource(ctx context.Context) (resource.Resource, error) {
 		"template_url": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "Location of file containing the template body. The URL must point to a template (max size: 460,800 bytes) that is located in an Amazon S3 bucket.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(1, 5120),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// TemplateURL is a write-only property.
 		}, /*END ATTRIBUTE*/
 	} /*END SCHEMA*/

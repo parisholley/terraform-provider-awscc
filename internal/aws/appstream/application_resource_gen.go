@@ -61,10 +61,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 		"attributes_to_delete": schema.SetAttribute{ /*START ATTRIBUTE*/
 			ElementType: types.StringType,
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Set{ /*START PLAN MODIFIERS*/
-				setplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AttributesToDelete is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: CreatedTime
@@ -270,10 +266,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Optional: true,
-			Computed: true,
-			PlanModifiers: []planmodifier.Set{ /*START PLAN MODIFIERS*/
-				setplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// Tags is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: WorkingDirectory

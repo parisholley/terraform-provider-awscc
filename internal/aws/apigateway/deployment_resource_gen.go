@@ -692,10 +692,6 @@ func deploymentResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "The description of the Stage resource for the Deployment resource to create. To specify a stage description, you must also provide a stage name.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// StageDescription is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: StageName
@@ -708,10 +704,6 @@ func deploymentResource(ctx context.Context) (resource.Resource, error) {
 		"stage_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The name of the Stage resource for the Deployment resource to create.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// StageName is a write-only property.
 		}, /*END ATTRIBUTE*/
 	} /*END SCHEMA*/

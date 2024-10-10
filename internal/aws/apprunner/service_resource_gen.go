@@ -46,13 +46,9 @@ func serviceResource(ctx context.Context) (resource.Resource, error) {
 		"auto_scaling_configuration_arn": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "Autoscaling configuration ARN",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(1, 1011),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AutoScalingConfigurationArn is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: EncryptionConfiguration

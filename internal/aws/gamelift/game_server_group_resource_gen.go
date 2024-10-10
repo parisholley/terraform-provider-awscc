@@ -15,15 +15,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-provider-awscc/internal/generic"
 	"github.com/hashicorp/terraform-provider-awscc/internal/registry"
-	fwvalidators "github.com/hashicorp/terraform-provider-awscc/internal/validators"
 )
 
 func init() {
@@ -99,33 +96,15 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 						// Property: TargetValue
 						"target_value": schema.Float64Attribute{ /*START ATTRIBUTE*/
 							Description: "Desired value to use with a game server group target-based scaling policy.",
-							Optional:    true,
-							Computed:    true,
-							Validators: []validator.Float64{ /*START VALIDATORS*/
-								fwvalidators.NotNullFloat64(),
-							}, /*END VALIDATORS*/
-							PlanModifiers: []planmodifier.Float64{ /*START PLAN MODIFIERS*/
-								float64planmodifier.UseStateForUnknown(),
-							}, /*END PLAN MODIFIERS*/
+							Required:    true,
 						}, /*END ATTRIBUTE*/
 					}, /*END SCHEMA*/
 					Description: "Settings for a target-based scaling policy applied to Auto Scaling group.",
-					Optional:    true,
-					Computed:    true,
-					Validators: []validator.Object{ /*START VALIDATORS*/
-						fwvalidators.NotNullObject(),
-					}, /*END VALIDATORS*/
-					PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-						objectplanmodifier.UseStateForUnknown(),
-					}, /*END PLAN MODIFIERS*/
+					Required:    true,
 				}, /*END ATTRIBUTE*/
 			}, /*END SCHEMA*/
 			Description: "Configuration settings to define a scaling policy for the Auto Scaling group that is optimized for game hosting. Updating this game server group property will not take effect for the created EC2 Auto Scaling group, please update the EC2 Auto Scaling group directly after creating the resource.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AutoScalingPolicy is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: BalancingStrategy
@@ -170,7 +149,6 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 		"delete_option": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The type of delete to perform.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.OneOf(
 					"SAFE_DELETE",
@@ -178,9 +156,6 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 					"RETAIN",
 				),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// DeleteOption is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: GameServerGroupArn
@@ -354,10 +329,6 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "The EC2 launch template that contains configuration settings and game server code to be deployed to all instances in the game server group. Updating this game server group property will not take effect for the created EC2 Auto Scaling group, please update the EC2 Auto Scaling group directly after creating the resource.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// LaunchTemplate is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: MaxSize
@@ -371,13 +342,9 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 		"max_size": schema.Float64Attribute{ /*START ATTRIBUTE*/
 			Description: "The maximum number of instances allowed in the EC2 Auto Scaling group. Updating this game server group property will not take effect for the created EC2 Auto Scaling group, please update the EC2 Auto Scaling group directly after creating the resource.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.Float64{ /*START VALIDATORS*/
 				float64validator.AtLeast(1.000000),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.Float64{ /*START PLAN MODIFIERS*/
-				float64planmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// MaxSize is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: MinSize
@@ -391,13 +358,9 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 		"min_size": schema.Float64Attribute{ /*START ATTRIBUTE*/
 			Description: "The minimum number of instances allowed in the EC2 Auto Scaling group. Updating this game server group property will not take effect for the created EC2 Auto Scaling group, please update the EC2 Auto Scaling group directly after creating the resource.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.Float64{ /*START VALIDATORS*/
 				float64validator.AtLeast(0.000000),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.Float64{ /*START PLAN MODIFIERS*/
-				float64planmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// MinSize is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: RoleArn
@@ -467,13 +430,11 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END NESTED OBJECT*/
 			Description: "A list of labels to assign to the new game server group resource. Updating game server group tags with CloudFormation will not take effect. Please update this property using AWS GameLift APIs instead.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeBetween(0, 200),
 			}, /*END VALIDATORS*/
 			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
 				generic.Multiset(),
-				listplanmodifier.UseStateForUnknown(),
 			}, /*END PLAN MODIFIERS*/
 			// Tags is a write-only property.
 		}, /*END ATTRIBUTE*/
@@ -497,7 +458,6 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 			ElementType: types.StringType,
 			Description: "A list of virtual private cloud (VPC) subnets to use with instances in the game server group. Updating this game server group property will not take effect for the created EC2 Auto Scaling group, please update the EC2 Auto Scaling group directly after creating the resource.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeBetween(1, 20),
 				listvalidator.ValueStringsAre(
@@ -507,7 +467,6 @@ func gameServerGroupResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END VALIDATORS*/
 			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
 				generic.Multiset(),
-				listplanmodifier.UseStateForUnknown(),
 			}, /*END PLAN MODIFIERS*/
 			// VpcSubnets is a write-only property.
 		}, /*END ATTRIBUTE*/

@@ -97,15 +97,10 @@ func dataSourceResource(ctx context.Context) (resource.Resource, error) {
 					// Property: FormName
 					"form_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "The name of the metadata form.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.LengthBetween(1, 128),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: TypeIdentifier
 					"type_identifier": schema.StringAttribute{ /*START ATTRIBUTE*/
@@ -135,13 +130,11 @@ func dataSourceResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END NESTED OBJECT*/
 			Description: "The metadata forms that are to be attached to the assets that this data source works with.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeBetween(0, 10),
 			}, /*END VALIDATORS*/
 			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
 				generic.Multiset(),
-				listplanmodifier.UseStateForUnknown(),
 			}, /*END PLAN MODIFIERS*/
 			// AssetFormsInput is a write-only property.
 		}, /*END ATTRIBUTE*/
@@ -676,10 +669,6 @@ func dataSourceResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "Configuration of the data source. It can be set to either glueRunConfiguration or redshiftRunConfiguration.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// Configuration is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: CreatedAt

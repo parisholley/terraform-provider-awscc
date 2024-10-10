@@ -456,10 +456,6 @@ func assessmentResource(ctx context.Context) (resource.Resource, error) {
 		"description": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The description of the specified assessment.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// Description is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: FrameworkId
@@ -498,14 +494,10 @@ func assessmentResource(ctx context.Context) (resource.Resource, error) {
 		"name": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The name of the related assessment.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(1, 127),
 				stringvalidator.RegexMatches(regexp.MustCompile("^[a-zA-Z0-9-_\\.]+$"), ""),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// Name is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Roles

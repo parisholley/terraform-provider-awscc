@@ -3046,10 +3046,6 @@ func connectorProfileResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END SCHEMA*/
 			Description: "Connector specific configurations needed to create connector profile",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// ConnectorProfileConfig is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: ConnectorProfileName

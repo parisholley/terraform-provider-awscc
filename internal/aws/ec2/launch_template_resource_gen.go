@@ -2684,10 +2684,6 @@ func launchTemplateResource(ctx context.Context) (resource.Resource, error) {
 			}, /*END NESTED OBJECT*/
 			Description: "The tags to apply to the launch template on creation. To tag the launch template, the resource type must be ``launch-template``.\n To specify the tags for the resources that are created when an instance is launched, you must use [TagSpecifications](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-launchtemplate-launchtemplatedata.html#cfn-ec2-launchtemplate-launchtemplatedata-tagspecifications).",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// TagSpecifications is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: VersionDescription
@@ -2700,10 +2696,6 @@ func launchTemplateResource(ctx context.Context) (resource.Resource, error) {
 		"version_description": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "A description for the first version of the launch template.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// VersionDescription is a write-only property.
 		}, /*END ATTRIBUTE*/
 	} /*END SCHEMA*/

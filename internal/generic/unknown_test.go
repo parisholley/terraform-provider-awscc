@@ -5,7 +5,6 @@ package generic
 
 import (
 	"context"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -233,7 +232,7 @@ func TestUnknownsSetValue(t *testing.T) {
 				t.Fatalf("unexpected error: %s", err)
 			}
 
-			err = SetUnknownValuesFromResourceModel(context.TODO(), &testCase.State, unknowns, testCase.ResourceModel, testCase.CfToTfNameMap, []*path.Path{})
+			err = SetUnknownValuesFromResourceModel(context.TODO(), &testCase.State, unknowns, testCase.ResourceModel, testCase.CfToTfNameMap)
 
 			if err == nil && testCase.ExpectedError {
 				t.Fatalf("expected error")

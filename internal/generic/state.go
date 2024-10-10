@@ -5,9 +5,6 @@ package generic
 
 import (
 	"context"
-	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
-
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -23,10 +20,6 @@ func copyStateValueAtPath(ctx context.Context, dst, src *tfsdk.State, p path.Pat
 	if diags.HasError() {
 		return diags
 	}
-
-	tflog.Debug(ctx, "copyStateValueAtPath", map[string]interface{}{
-		"value": hclog.Fmt("%v = %v", p, val),
-	})
 
 	diags.Append(dst.SetAttribute(ctx, p, val)...)
 	if diags.HasError() {

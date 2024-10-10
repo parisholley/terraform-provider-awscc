@@ -45,10 +45,6 @@ func instanceResource(ctx context.Context) (resource.Resource, error) {
 		"additional_info": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "This property is reserved for internal use. If you use it, the stack fails with this error: Bad property set: [Testing this property] (Service: AmazonEC2; Status Code: 400; Error Code: InvalidParameterCombination; Request ID: 0XXXXXX-49c7-4b40-8bcc-76885dcXXXXX).",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AdditionalInfo is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Affinity
@@ -1331,10 +1327,6 @@ func instanceResource(ctx context.Context) (resource.Resource, error) {
 		"propagate_tags_to_volume_on_creation": schema.BoolAttribute{ /*START ATTRIBUTE*/
 			Description: "Indicates whether to assign the tags from the instance to all of the volumes attached to the instance at launch. If you specify true and you assign tags to the instance, those tags are automatically assigned to all of the volumes that you attach to the instance at launch. If you specify false, those tags are not assigned to the attached volumes.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Bool{ /*START PLAN MODIFIERS*/
-				boolplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// PropagateTagsToVolumeOnCreation is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: PublicDnsName

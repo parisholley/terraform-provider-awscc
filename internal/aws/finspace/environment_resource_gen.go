@@ -286,10 +286,8 @@ func environmentResource(ctx context.Context) (resource.Resource, error) {
 					}, /*END NESTED OBJECT*/
 					Description: "Attribute map for SAML configuration",
 					Optional:    true,
-					Computed:    true,
 					PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
 						generic.Multiset(),
-						listplanmodifier.UseStateForUnknown(),
 					}, /*END PLAN MODIFIERS*/
 					// AttributeMap is a write-only property.
 				}, /*END ATTRIBUTE*/

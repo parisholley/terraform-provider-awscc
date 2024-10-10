@@ -43,13 +43,9 @@ func appResource(ctx context.Context) (resource.Resource, error) {
 		//	}
 		"access_token": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Optional: true,
-			Computed: true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(1, 255),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AccessToken is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: AppId
@@ -374,10 +370,6 @@ func appResource(ctx context.Context) (resource.Resource, error) {
 				}, /*END ATTRIBUTE*/
 			}, /*END SCHEMA*/
 			Optional: true,
-			Computed: true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AutoBranchCreationConfig is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: BasicAuthConfig
@@ -436,10 +428,6 @@ func appResource(ctx context.Context) (resource.Resource, error) {
 				}, /*END ATTRIBUTE*/
 			}, /*END SCHEMA*/
 			Optional: true,
-			Computed: true,
-			PlanModifiers: []planmodifier.Object{ /*START PLAN MODIFIERS*/
-				objectplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// BasicAuthConfig is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: BuildSpec
@@ -779,14 +767,10 @@ func appResource(ctx context.Context) (resource.Resource, error) {
 		//	}
 		"oauth_token": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Optional: true,
-			Computed: true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthAtMost(1000),
 				stringvalidator.RegexMatches(regexp.MustCompile("(?s).*"), ""),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// OauthToken is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Platform

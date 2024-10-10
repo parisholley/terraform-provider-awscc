@@ -12,8 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -41,10 +39,6 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 		"automatic_failover_enabled": schema.BoolAttribute{ /*START ATTRIBUTE*/
 			Description: "AutomaticFailoverEnabled",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Bool{ /*START PLAN MODIFIERS*/
-				boolplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AutomaticFailoverEnabled is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: CacheNodeType
@@ -57,10 +51,6 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 		"cache_node_type": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The cache node type of the Global Datastore",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// CacheNodeType is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: CacheParameterGroupName
@@ -88,10 +78,6 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 		"engine_version": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The engine version of the Global Datastore.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// EngineVersion is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: GlobalNodeGroupCount
@@ -104,10 +90,6 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 		"global_node_group_count": schema.Int64Attribute{ /*START ATTRIBUTE*/
 			Description: "Indicates the number of node groups in the Global Datastore.",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Int64{ /*START PLAN MODIFIERS*/
-				int64planmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// GlobalNodeGroupCount is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: GlobalReplicationGroupDescription
@@ -149,10 +131,6 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 		"global_replication_group_id_suffix": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The suffix name of a Global Datastore. Amazon ElastiCache automatically applies a prefix to the Global Datastore ID when it is created. Each AWS Region has its own prefix. ",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// GlobalReplicationGroupIdSuffix is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Members
@@ -336,13 +314,9 @@ func globalReplicationGroupResource(ctx context.Context) (resource.Resource, err
 			}, /*END NESTED OBJECT*/
 			Description: "Describes the replication group IDs, the AWS regions where they are stored and the shard configuration for each that comprise the Global Datastore ",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.UniqueValues(),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// RegionalConfigurations is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: Status

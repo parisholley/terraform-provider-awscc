@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -58,10 +57,6 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 		"attach_missing_permission": schema.BoolAttribute{ /*START ATTRIBUTE*/
 			Description: "If set to true, the managed policies for SSM and CW will be attached to the instance roles if they are missing",
 			Optional:    true,
-			Computed:    true,
-			PlanModifiers: []planmodifier.Bool{ /*START PLAN MODIFIERS*/
-				boolplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// AttachMissingPermission is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: AutoConfigurationEnabled
@@ -1211,19 +1206,14 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 					// Property: ComponentConfigurationMode
 					"component_configuration_mode": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "The component monitoring configuration mode.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.OneOf(
 								"DEFAULT",
 								"DEFAULT_WITH_OVERWRITE",
 								"CUSTOM",
 							),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: ComponentName
 					"component_name": schema.StringAttribute{ /*START ATTRIBUTE*/
@@ -2833,27 +2823,18 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 					// Property: Tier
 					"tier": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "The tier of the application component.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.RegexMatches(regexp.MustCompile("^[A-Z][[A-Z]_]*$"), ""),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Description: "The monitoring settings of the components.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeAtLeast(1),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// ComponentMonitoringSettings is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: CustomComponents
@@ -2901,46 +2882,32 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 					// Property: ComponentName
 					"component_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "The name of the component.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.LengthBetween(1, 128),
 							stringvalidator.RegexMatches(regexp.MustCompile("^[\\d\\w\\-_.+]*$"), ""),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: ResourceList
 					"resource_list": schema.ListAttribute{ /*START ATTRIBUTE*/
 						ElementType: types.StringType,
 						Description: "The list of resource ARNs that belong to the component.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.List{ /*START VALIDATORS*/
 							listvalidator.SizeAtLeast(1),
 							listvalidator.ValueStringsAre(
 								stringvalidator.LengthBetween(20, 300),
 								stringvalidator.RegexMatches(regexp.MustCompile("^arn:aws(-[\\w]+)*:[\\w\\d-]+:([\\w\\d-]*)?:[\\w\\d_-]*([:/].+)*$"), ""),
 							),
-							fwvalidators.NotNullList(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-							listplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Description: "The custom grouped components.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeAtLeast(1),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// CustomComponents is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: GroupingType
@@ -3040,80 +3007,49 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 								// Property: Pattern
 								"pattern": schema.StringAttribute{ /*START ATTRIBUTE*/
 									Description: "The log pattern.",
-									Optional:    true,
-									Computed:    true,
+									Required:    true,
 									Validators: []validator.String{ /*START VALIDATORS*/
 										stringvalidator.LengthBetween(1, 50),
-										fwvalidators.NotNullString(),
 									}, /*END VALIDATORS*/
-									PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-										stringplanmodifier.UseStateForUnknown(),
-									}, /*END PLAN MODIFIERS*/
 								}, /*END ATTRIBUTE*/
 								// Property: PatternName
 								"pattern_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 									Description: "The name of the log pattern.",
-									Optional:    true,
-									Computed:    true,
+									Required:    true,
 									Validators: []validator.String{ /*START VALIDATORS*/
 										stringvalidator.LengthBetween(1, 50),
 										stringvalidator.RegexMatches(regexp.MustCompile("[a-zA-Z0-9.-_]*"), ""),
-										fwvalidators.NotNullString(),
 									}, /*END VALIDATORS*/
-									PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-										stringplanmodifier.UseStateForUnknown(),
-									}, /*END PLAN MODIFIERS*/
 								}, /*END ATTRIBUTE*/
 								// Property: Rank
 								"rank": schema.Int64Attribute{ /*START ATTRIBUTE*/
 									Description: "Rank of the log pattern.",
-									Optional:    true,
-									Computed:    true,
-									Validators: []validator.Int64{ /*START VALIDATORS*/
-										fwvalidators.NotNullInt64(),
-									}, /*END VALIDATORS*/
-									PlanModifiers: []planmodifier.Int64{ /*START PLAN MODIFIERS*/
-										int64planmodifier.UseStateForUnknown(),
-									}, /*END PLAN MODIFIERS*/
+									Required:    true,
 								}, /*END ATTRIBUTE*/
 							}, /*END SCHEMA*/
 						}, /*END NESTED OBJECT*/
 						Description: "The log patterns of a set.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.List{ /*START VALIDATORS*/
 							listvalidator.SizeAtLeast(1),
-							fwvalidators.NotNullList(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-							listplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 					// Property: PatternSetName
 					"pattern_set_name": schema.StringAttribute{ /*START ATTRIBUTE*/
 						Description: "The name of the log pattern set.",
-						Optional:    true,
-						Computed:    true,
+						Required:    true,
 						Validators: []validator.String{ /*START VALIDATORS*/
 							stringvalidator.LengthBetween(1, 30),
 							stringvalidator.RegexMatches(regexp.MustCompile("[a-zA-Z0-9.-_]*"), ""),
-							fwvalidators.NotNullString(),
 						}, /*END VALIDATORS*/
-						PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-							stringplanmodifier.UseStateForUnknown(),
-						}, /*END PLAN MODIFIERS*/
 					}, /*END ATTRIBUTE*/
 				}, /*END SCHEMA*/
 			}, /*END NESTED OBJECT*/
 			Description: "The log pattern sets.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.List{ /*START VALIDATORS*/
 				listvalidator.SizeAtLeast(1),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.List{ /*START PLAN MODIFIERS*/
-				listplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// LogPatternSets is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: OpsCenterEnabled
@@ -3144,14 +3080,10 @@ func applicationResource(ctx context.Context) (resource.Resource, error) {
 		"ops_item_sns_topic_arn": schema.StringAttribute{ /*START ATTRIBUTE*/
 			Description: "The SNS topic provided to Application Insights that is associated to the created opsItem.",
 			Optional:    true,
-			Computed:    true,
 			Validators: []validator.String{ /*START VALIDATORS*/
 				stringvalidator.LengthBetween(20, 300),
 				stringvalidator.RegexMatches(regexp.MustCompile("^arn:aws(-[\\w]+)*:[\\w\\d-]+:([\\w\\d-]*)?:[\\w\\d_-]*([:/].+)*$"), ""),
 			}, /*END VALIDATORS*/
-			PlanModifiers: []planmodifier.String{ /*START PLAN MODIFIERS*/
-				stringplanmodifier.UseStateForUnknown(),
-			}, /*END PLAN MODIFIERS*/
 			// OpsItemSNSTopicArn is a write-only property.
 		}, /*END ATTRIBUTE*/
 		// Property: ResourceGroupName
