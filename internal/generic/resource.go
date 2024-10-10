@@ -422,34 +422,6 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 		return
 	}
 
-	// Clear any write-only values.
-	currentStateRaw := response.State.Raw
-	if len(r.writeOnlyAttributePaths) > 0 {
-		currentStateRaw, err = tftypes.Transform(currentStateRaw, func(tfPath *tftypes.AttributePath, val tftypes.Value) (tftypes.Value, error) {
-			if len(tfPath.Steps()) < 1 {
-				return val, nil
-			}
-
-			path, diags := attributePath(ctx, tfPath, response.State.Schema)
-			if diags.HasError() {
-				return val, ccdiag.DiagnosticsError(diags)
-			}
-
-			for _, woPath := range r.writeOnlyAttributePaths {
-				if woPath.Equal(path) {
-					return tftypes.NewValue(val.Type(), nil), nil
-				}
-			}
-
-			return val, nil
-		})
-		if err != nil {
-			response.Diagnostics.Append(DesiredStateErrorDiag("Response State", err))
-
-			return
-		}
-	}
-
 	response.Diagnostics.Append(r.populateUnknownValues(ctx, id, &response.State)...)
 
 	if response.Diagnostics.HasError() {
