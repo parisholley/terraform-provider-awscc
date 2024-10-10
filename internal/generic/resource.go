@@ -415,11 +415,6 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 	// Produce a wholly-known new State by determining the final values for any attributes left unknown in the planned state.
 	response.State.Raw = request.Plan.Raw
 
-	tmp := tfsdk.State{
-		Schema: request.Plan.Schema,
-		Raw:    request.Plan.Raw,
-	}
-
 	// Set the "id" attribute.
 	if err = r.setId(ctx, id, &response.State); err != nil {
 		response.Diagnostics.Append(ResourceIdentifierNotSetDiag(err))
@@ -427,17 +422,36 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 		return
 	}
 
-	response.Diagnostics.Append(r.populateUnknownValues(ctx, id, &response.State)...)
+	// Clear any write-only values.
+	currentStateRaw := response.State.Raw
+	if len(r.writeOnlyAttributePaths) > 0 {
+		currentStateRaw, err = tftypes.Transform(currentStateRaw, func(tfPath *tftypes.AttributePath, val tftypes.Value) (tftypes.Value, error) {
+			if len(tfPath.Steps()) < 1 {
+				return val, nil
+			}
 
-	// Copy over any write-only values.
-	// They can only be in the current state.
-	for _, path := range r.writeOnlyAttributePaths {
-		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &tmp, *path)...)
-		if response.Diagnostics.HasError() {
+			path, diags := attributePath(ctx, tfPath, response.State.Schema)
+			if diags.HasError() {
+				return val, ccdiag.DiagnosticsError(diags)
+			}
+
+			for _, woPath := range r.writeOnlyAttributePaths {
+				if woPath.Equal(path) {
+					return tftypes.NewValue(val.Type(), nil), nil
+				}
+			}
+
+			return val, nil
+		})
+		if err != nil {
+			response.Diagnostics.Append(DesiredStateErrorDiag("Response State", err))
+
 			return
 		}
 	}
-	
+
+	response.Diagnostics.Append(r.populateUnknownValues(ctx, id, &response.State)...)
+
 	if response.Diagnostics.HasError() {
 		return
 	}
