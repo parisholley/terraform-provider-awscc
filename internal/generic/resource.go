@@ -415,6 +415,15 @@ func (r *genericResource) Create(ctx context.Context, request resource.CreateReq
 	// Produce a wholly-known new State by determining the final values for any attributes left unknown in the planned state.
 	response.State.Raw = request.Plan.Raw
 
+	// Copy over any write-only values.
+	// They can only be in the current state.
+	for _, path := range r.writeOnlyAttributePaths {
+		response.Diagnostics.Append(copyStateValueAtPath(ctx, &response.State, &request.State, *path)...)
+		if response.Diagnostics.HasError() {
+			return
+		}
+	}
+
 	// Set the "id" attribute.
 	if err = r.setId(ctx, id, &response.State); err != nil {
 		response.Diagnostics.Append(ResourceIdentifierNotSetDiag(err))
