@@ -60,7 +60,7 @@ func UnknownValuePaths(_ context.Context, val tftypes.Value) ([]*tftypes.Attribu
 // The unknown value paths are obtained from the State via a previous call to UnknownValuePaths.
 // Functionality is split between these 2 functions, rather than calling UnknownValuePaths from within this function,
 // so as to avoid unnecessary Cloud Control API calls to obtain the current ResourceModel.
-func SetUnknownValuesFromResourceModel(ctx context.Context, state *tfsdk.State, unknowns []*tftypes.AttributePath, resourceModel string, cfToTfNameMap map[string]string) error {
+func SetUnknownValuesFromResourceModel(ctx context.Context, state *tfsdk.State, unknowns []*tftypes.AttributePath, resourceModel string, cfToTfNameMap map[string]string, writeOnly []*path.Path) error {
 	// Get the Terraform Value of the ResourceModel.
 	translator := toTerraform{cfToTfNameMap: cfToTfNameMap}
 	schema := state.Schema
@@ -80,6 +80,18 @@ func SetUnknownValuesFromResourceModel(ctx context.Context, state *tfsdk.State, 
 		path, diags := attributePath(ctx, path, schema)
 		if diags.HasError() {
 			return ccdiag.DiagnosticsError(diags)
+		}
+
+		skip := false
+
+		for _, write := range writeOnly {
+			if write.String() == path.String() {
+				skip = true
+			}
+		}
+
+		if skip {
+			continue
 		}
 
 		diags.Append(copyStateValueAtPath(ctx, state, &src, path)...)
